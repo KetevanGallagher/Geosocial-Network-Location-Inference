@@ -11,13 +11,23 @@ The three proposed algorithms are included in this repository. The Greedy Algori
 Each algorithm requires an adjacency matrix to represent the social network, a list of coordinates that nodes are matched to, and a dictionary of known locations which maps the ID of a node in the adjacency matrix to a coordinate in the list of locations. If there are no known locations, this dictionary is empty. For each algorithm, a dictionary which maps nodes to locations is returned.
 
 ## Experimental Results
-The three proposed algorithms were tested on three datasets: Facebook Social Connectedness Data, Fairfax Mobility Data, and a Synthetic Geosocial Erdős-Rényi Network. The social networks and locations for these datasets were generated using the code in the folder Datasets.
+The three proposed algorithms were tested on three datasets: Facebook Social Connectedness Data [[1]](#1), Fairfax Mobility Data [[2]](#2), and a Synthetic Geosocial Erdős-Rényi Network [[3]](#3). The social networks and locations for the first two datasets were generated using the code in the folder Datasets. For the Synthetic Geosocial Erdős-Rényi Network, random locations were used and the social network was generated using the code in the [Synthetic Geosocial Networks Repository](https://github.com/KetevanGallagher/Synthetic-Geosocial-Networks).
 
-### Facebook Social Connectedness Data
+### Facebook Social Connectedness Network
 TODO
 
-### Fairfax Mobility Data
+### Fairfax Mobility Network
 TODO
 
 ### Synthetic Geosocial Erdős-Rényi Network
 TODO
+
+## References
+<a id="1">[1]</a> 
+M. Bailey, R. Cao, T. Kuchler, J. Stroebel, and A. Wong. Social connectedness: Measurement, determinants, and effects. *Journal of Economic Perspectives*, 32(3):259–280, 2018.
+
+<a id="2">[2]</a> 
+Y. Kang, S. Gao, Y. Liang, M. Li, J. Rao, and J. Kruse. Multiscale dynamic human mobility flow dataset in the us during the covid-19 epidemic. *Scientific data*, 7(1):390, 2020.
+
+<a id="3">[3]</a> 
+K. Gallagher, T. Anderson, A. Crooks, and A. Züfle. Synthetic geosocial network generation. In *Proceedings of the 7th ACM SIGSPATIAL Workshop on Location-based Recommendations, Geosocial Networks and Geoadvertising*, pages 15–24, 2023.
