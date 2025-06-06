@@ -1,4 +1,4 @@
-# Geosocial-Network-Location-Inference
+# Geosocial Network Location Inference
 This is the code for the forthcoming paper *Your Friends Make You Unique: Location Inference based on Friends’ Locations in Geosocial Networks*.
 
 ## Abstract
