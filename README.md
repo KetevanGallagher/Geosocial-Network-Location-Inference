@@ -11,7 +11,7 @@ The three proposed algorithms are included in this repository. The Greedy Algori
 Each algorithm requires an adjacency matrix to represent the social network, a list of coordinates that nodes are matched to, and a dictionary of known locations which maps the ID of a node in the adjacency matrix to a coordinate in the list of locations. If there are no known locations, this dictionary is empty. For each algorithm, a dictionary which maps nodes to locations is returned.
 
 ## Experimental Results
-|![](ExperimentalResults/FacebookImages/FacebookGroundTruth.png)<br>Ground Truth Network for Facebook Location Data|![](ExperimentalResults/FacebookImages/FairfaxGroundTruth.png)<br>Ground Truth Network for Fairfax Mobility Data|
+|![](ExperimentalResults/FacebookImages/FacebookGroundTruth.png)<br>Ground Truth Network for Facebook Location Data|![](ExperimentalResults/FarifaxImages/FairfaxGroundTruth.png)<br>Ground Truth Network for Fairfax Mobility Data|
 |:-:|:-:|
 
 The three proposed algorithms were tested on three datasets: Facebook Social Connectedness Data [[1]](#1), Fairfax Mobility Data [[2]](#2), and a Synthetic Geosocial Erdős-Rényi Network [[3]](#3). The social networks and locations for the first two datasets were generated using the code in the folder Datasets. For the Synthetic Geosocial Erdős-Rényi Network, random locations were used and the social network was generated using the code in the [Synthetic Geosocial Networks Repository](https://github.com/KetevanGallagher/Synthetic-Geosocial-Networks). The Ground Truth Networks for the Facebook and Fairfax data are shown in the figure above.
