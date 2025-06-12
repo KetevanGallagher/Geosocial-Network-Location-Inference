@@ -6,7 +6,7 @@ Geosocial networks serve as a critical bridge between cyber and physical worlds 
 We propose and evaluate three novel algorithms for linking social and spatial networks: (i) a greedy assignment algorithm, (ii) a hierarchical approach using graph partitioning, and (iii) a spatially-aware adaptation of force-directed graph drawing. Each method is further enhanced to incorporate a small number of known anchor vertex—users with known locations. Using anonymized social network data from the Virginia, USA region, our empirical evaluation shows that even a sparse set of anchor points can enable accurate estimation of users' home locations. These findings highlight both the potential analytical value and the privacy risks associated with linking social and spatial data.
 
 ## Algorithms
-The three proposed algorithms are included in this repository. The Greedy Algorithm matches vertices to locations that are close to locations of vertices they are connected to. Vertices are processed iteratively in order of degree. The Partitioning Algorithm utilizes METIS, a graph partitioning software, to match communities of vertices to communities of locations. Finally, the Graph Drawing Algorithm utilizes the NetworkX Spring Layout function to generate locations for each vertex in the social network. Vertices are then matched to the closest available location.
+The three proposed algorithms are included in this repository. The Greedy algorithm matches vertices to locations that are close to locations of vertices they are connected to. Vertices are processed iteratively in order of degree. The Partitioning algorithm utilizes METIS, a graph partitioning software, to match communities of vertices to communities of locations. Finally, the Graph Drawing algorithm utilizes the NetworkX Spring Layout function to generate locations for each vertex in the social network. Vertices are then matched to the closest available location.
 
 Each algorithm requires an adjacency matrix to represent the social network, a list of coordinates that vertices are matched to, and a dictionary of known locations which maps the ID of a vertex in the adjacency matrix to a coordinate in the list of locations. If there are no known locations, this dictionary is empty. For each algorithm, a dictionary which maps vertices to locations is returned.
 
@@ -55,7 +55,7 @@ The qualitative results for the Facebook Network are shown in the figure below. 
 
 ### Fairfax Mobility Network
 
-This table shows the qualitative results for the Fairfax Mobility Data. The results for the Fairfax Mobility Data show similar patterns to that of the Facebook Location data. For the Partitioning Algorithm with 24 known locations, clusters can be seen where communities where matched correctly, but vertices within the community were matched incorrectly.
+This table shows the qualitative results for the Fairfax Mobility Data. The results for the Fairfax Mobility Data show similar patterns to that of the Facebook Location data. For the Partitioning algorithm with 24 known locations, clusters can be seen where communities where matched correctly but individual vertices within the community were matched incorrectly.
 
 | Known Locations | Random Algorithm | Greedy Algorithm | Partitioning Algorithm | Graph Drawing Algorithm |
 |     :---:    |     :---:      |     :---:     |     :---:     |     :---:     |
@@ -102,54 +102,54 @@ This table shows the qualitative results for the Fairfax Mobility Data. The resu
 
 | Population | Known Locations|Algorithm|Number Correct|Average Distance|Time (seconds)|Standard Deviation of Average Distances|
 |     :---:    |     :---:    |     :---:      |     :---:     |     :---:     |     :---:     |     :---:     |
+|100|0|Random|1.1|0.5222|0.0003|0.0307|
 |100|0|Greedy|1.6|0.4934|0.0057|0.0694|
 |100|0|Partitioning-Based|1.6667|0.4632|415.9714|0.142|
 |100|0|Graph Drawing|1.1333|0.5431|0.0593|0.0975|
-|100|0|Random|1.1|0.5222|0.0003|0.0307|
+|100|3|Random|4.5333|0.501|0.0004|0.0272|
 |100|3|Greedy|5.8|0.4264|0.0027|0.0783|
 |100|3|Partitioning-Based|4.1333|0.5031|423.1631|0.046|
 |100|3|Graph Drawing|8.5333|0.3224|0.0587|0.1071|
-|100|3|Random|4.5333|0.501|0.0004|0.0272|
+|100|10|Random|11.5667|0.4629|0.0004|0.0234|
 |100|10|Greedy|12.1667|0.4144|0.0028|0.0912|
 |100|10|Partitioning-Based|12.4333|0.4162|414.2671|0.1102|
 |100|10|Graph Drawing|25.1667|0.1551|0.059|0.0638|
-|100|10|Random|11.5667|0.4629|0.0004|0.0234|
+|100|50|Random|51.1333|0.2528|0.0004|0.0201|
 |100|50|Greedy|52.5333|0.2085|0.0025|0.0286|
 |100|50|Partitioning-Based|51.2333|0.2228|401.6261|0.0496|
 |100|50|Graph Drawing|66.5|0.0582|0.0543|0.0108|
-|100|50|Random|51.1333|0.2528|0.0004|0.0201|
+|500|0|Random|0.9333|0.5195|0.0028|0.012|
 |500|0|Greedy|1.1667|0.502|0.1408|0.0588|
 |500|0|Partitioning-Based|5.0|0.3893|422.1444|0.166|
 |500|0|Graph Drawing|1.6|0.5244|4.9275|0.1464|
-|500|0|Random|0.9333|0.5195|0.0028|0.012|
+|500|3|Random|4.1667|0.5185|0.0028|0.0145|
 |500|3|Greedy|5.0667|0.4698|0.0457|0.0747|
 |500|3|Partitioning-Based|8.8667|0.3608|393.7533|0.1843|
 |500|3|Graph Drawing|5.6|0.4353|5.2905|0.1354|
-|500|3|Random|4.1667|0.5185|0.0028|0.0145|
+|500|10|Random|10.9333|0.508|0.0029|0.0124|
 |500|10|Greedy|12.3|0.4557|0.0462|0.0664|
 |500|10|Partitioning-Based|13.7667|0.4086|395.2789|0.1798|
 |500|10|Graph Drawing|17.2667|0.2357|5.3788|0.0889|
-|500|10|Random|10.9333|0.508|0.0029|0.0124|
+|500|50|Random|50.9|0.4697|0.003|0.0113|
 |500|50|Greedy|51.9333|0.4527|0.0509|0.0652|
 |500|50|Partitioning-Based|53.7667|0.3421|395.1362|0.1455|
 |500|50|Graph Drawing|63.7|0.1309|4.8724|0.0059|
-|500|50|Random|50.9|0.4697|0.003|0.0113|
+|1000|0|Random|1.0|0.5216|0.0095|0.0095|
 |1000|0|Greedy|1.6333|0.5104|0.6366|0.0533|
 |1000|0|Partitioning-Based|8.1|0.3301|406.0176|0.1802|
 |1000|0|Graph Drawing|1.3333|0.5273|12.4259|0.122|
-|1000|0|Random|1.0|0.5216|0.0095|0.0095|
+|1000|3|Random|4.1|0.5191|0.0098|0.0071|
 |1000|3|Greedy|5.1|0.4823|0.1982|0.0709|
 |1000|3|Partitioning-Based|10.2|0.3824|432.8506|0.1841|
 |1000|3|Graph Drawing|5.1|0.4522|13.1301|0.1627|
-|1000|3|Random|4.1|0.5191|0.0098|0.0071|
+|1000|10|Random|10.8333|0.5157|0.0097|0.0074|
 |1000|10|Greedy|11.9|0.4812|0.1853|0.0621|
 |1000|10|Partitioning-Based|15.4667|0.4125|401.1124|0.2068|
 |1000|10|Graph Drawing|13.0|0.366|13.1802|0.1193|
-|1000|10|Random|10.8333|0.5157|0.0097|0.0074|
+|1000|50|Random|51.1|0.4965|0.0101|0.0093|
 |1000|50|Greedy|52.8667|0.459|0.1964|0.0706|
 |1000|50|Partitioning-Based|56.8667|0.3587|452.2197|0.1832|
 |1000|50|Graph Drawing|59.3333|0.1617|12.7328|0.008|
-|1000|50|Random|51.1|0.4965|0.0101|0.0093|
 
 ## References
 <a id="1">[1]</a> 
