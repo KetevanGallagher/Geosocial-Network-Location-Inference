@@ -6,7 +6,7 @@ Geosocial networks serve as a critical bridge between cyber and physical worlds 
 We propose and evaluate three novel algorithms for linking social and spatial networks: (i) a greedy assignment algorithm, (ii) a hierarchical approach using graph partitioning, and (iii) a spatially-aware adaptation of force-directed graph drawing. Each method is further enhanced to incorporate a small number of known anchor vertex—users with known locations. Using anonymized social network data from the Virginia, USA region, our empirical evaluation shows that even a sparse set of anchor points can enable accurate estimation of users' home locations. These findings highlight both the potential analytical value and the privacy risks associated with linking social and spatial data.
 
 ## Algorithms
-The three proposed algorithms are included in this repository. The Greedy algorithm matches vertices to locations that are close to locations of vertices they are connected to. Vertices are processed iteratively in order of degree. The Partitioning-Based algorithm utilizes METIS, a graph partitioning software, to match communities of vertices to communities of locations. Finally, the Graph Drawing algorithm utilizes the NetworkX Spring Layout function to generate locations for each vertex in the social network. Vertices are then matched to the closest available location.
+The three proposed algorithms are included in this repository. The Greedy algorithm matches vertices to locations that are close to locations of vertices they are connected to. Vertices are processed iteratively in order of degree. The Partitioning-Based algorithm utilizes METIS, a graph partitioning software, to match clusters of vertices to clusters of locations. Finally, the Graph Drawing algorithm utilizes the NetworkX Spring Layout function to generate locations for each vertex in the social network. Vertices are then matched to the closest available location.
 
 Each algorithm requires an adjacency matrix to represent the social network, a list of coordinates that vertices are matched to, and a dictionary of known locations which maps the ID of a vertex in the adjacency matrix to a coordinate in the list of locations. If there are no known locations, this dictionary is empty. For each algorithm, a dictionary which maps vertices to locations is returned.
 
@@ -26,36 +26,38 @@ The qualitative results for the Facebook Network are shown in the figure below. 
 | 68 \(10%\) | <img src="ExperimentalResults/FacebookImages/FacebookCorrectDistanceRandomKnown68.png" width="250"> | <img src="ExperimentalResults/FacebookImages/FacebookCorrectDistanceGreedyKnown68.png" width="250"/> | <img src="ExperimentalResults/FacebookImages/FacebookCorrectDistancePartitioningKnown68.png" width="250"> | <img src="ExperimentalResults/FacebookImages/FacebookCorrectDistanceGraphDrawingKnown68.png" width="250"> |
 | 344 \(50%\) | <img src="ExperimentalResults/FacebookImages/FacebookCorrectDistanceRandomKnown344.png" width="250"> | <img src="ExperimentalResults/FacebookImages/FacebookCorrectDistanceGreedyKnown344.png" width="250"/> | <img src="ExperimentalResults/FacebookImages/FacebookCorrectDistancePartitioningKnown344.png" width="250"> | <img src="ExperimentalResults/FacebookImages/FacebookCorrectDistanceGraphDrawingKnown344.png" width="250"> |
 
-|Known Locations|Algorithm|Number Correct|Average Distance|Time (seconds)|Standard Deviation of Average Distances|
+Detailed quanitative results for the Facebook Network are displayed below. The runtime of each algorithm is relatively similar, except for the Partitioning-Based algorithm, which must consider combinations of location and social network clusters. It can be observed that the Partitioning-Based algorithm is able to match many vertices to their correct location when compared to the other algorithms for a small number of known locations, but the number of additional vertices inferred correctly does not increase with a higher number of known locations. However, for the Graph Drawing algorithm, as the number of known locations increase, so does the number of vertices inferred correctly when compared to the other three algorithms. Additionally, the standard deviation of the average distances for the Greedy and Partitioning-Based algorithms is higher than that for the random baseline and the Graph Drawing algorithm for all trials with known locations. For the Greedy algorithm, if the starting vertex is inferred incorrectly, then the error increases as more vertices are inferred incorrectly. For the Partitioning-Based algorithm, if clusters are matched incorrectly, this can lead to large errors later one. The random baseline has the lowest standard deviation, which is to be expected. The standard deviation for the Graph Drawing algorithm decreases as the number of known locations increase. For example, for 344 known locations, the standard deviations of the Partitioning-Based and Greedy algorithms are over ten times that of the Graph Drawing algorithm.
+
+|Known Locations|Algorithm|Number Correct|Average Distance|Runtime (seconds)|Standard Deviation of Average Distances|
 |     :---:    |     :---:      |     :---:     |     :---:     |     :---:     |     :---:     |
-|0|Random|0.8667|2.2203|0.0047|0.0352|
-|0|Greedy|1.0|1.9764|0.2905|0.0|
-|0|Partitioning-Based|11.0|1.4853|395.897|0.0|
-|0|Graph Drawing|1.3333|2.0509|7.5926|0.1776|
-|3|Random|3.8667|2.1927|0.0047|0.0485|
-|3|Greedy|5.2667|1.9103|0.1016|0.5144|
-|3|Partitioning-Based|20.7333|1.3088|408.281|0.3281|
-|3|Graph Drawing|5.0667|1.6324|8.1366|0.3606|
-|68|Random|68.9667|1.9937|0.0051|0.0547|
-|68|Greedy|70.6667|1.8556|0.1078|0.4058|
-|68|Partitioning-Based|80.1667|1.5062|403.1903|0.4409|
-|68|Graph Drawing|72.6|1.0994|7.4609|0.2018|
-|206|Random|207.2667|1.551|0.0058|0.0378|
-|206|Greedy|209.7333|1.3816|0.1059|0.3154|
-|206|Partitioning-Based|215.7667|1.3659|407.0433|0.3927|
-|206|Graph Drawing|214.4|0.4511|5.7416|0.0395|
-|344|Random|345.1667|1.1163|0.0062|0.0425|
-|344|Greedy|348.9333|0.9168|0.0975|0.2704|
-|344|Partitioning-Based|352.6333|0.9387|397.8484|0.2807|
-|344|Graph Drawing|354.6667|0.2836|4.2107|0.0176|
-|481|Random|481.8667|0.6754|0.0065|0.0278|
-|481|Greedy|495.0|0.3876|0.0824|0.1482|
-|481|Partitioning-Based|486.6333|0.6401|392.5766|0.123|
-|481|Graph Drawing|493.9|0.1602|2.6946|0.0103|
+|0|Random|1.0333|210.5632|0.0046|4.0744|
+|0|Greedy|1.0|171.3947|0.2925|0.0|
+|0|Partitioning-Based|11.0|107.2386|397.4918|0.0|
+|0|Graph Drawing|1.4667|200.2531|7.5295|17.6145|
+|3|Random|3.7333|211.3271|0.0047|3.9804|
+|3|Greedy|5.5667|191.8009|0.1023|44.5949|
+|3|Partitioning-Based|22.0333|121.382|419.185|54.6683|
+|3|Graph Drawing|5.0|134.8171|8.3625|25.0135|
+|68|Random|69.1|189.3965|0.0051|3.5319|
+|68|Greedy|71.7333|161.813|0.1073|50.8007|
+|68|Partitioning-Based|79.7|136.5924|405.4833|59.2571|
+|68|Graph Drawing|72.0|92.6715|7.5383|24.8616|
+|206|Random|206.9667|146.3208|0.0057|5.1359|
+|206|Greedy|209.2333|133.4153|0.1072|34.683|
+|206|Partitioning-Based|219.0667|112.5161|396.7046|47.8983|
+|206|Graph Drawing|215.9667|39.0742|5.8469|3.2839|
+|344|Random|345.0667|105.53|0.0062|4.2922|
+|344|Greedy|348.4333|97.7457|0.0972|23.8029|
+|344|Partitioning-Based|350.4667|86.9888|431.18|27.0903|
+|344|Graph Drawing|353.8667|24.4707|4.1703|1.7799|
+|481|Random|481.8667|63.4465|0.0065|3.6456|
+|481|Greedy|494.5667|36.4627|0.0829|14.2442|
+|481|Partitioning-Based|488.3667|59.2672|394.2475|15.6749|
+|481|Graph Drawing|493.6|13.7765|2.6696|0.9123|
 
 ### Fairfax Mobility Network
 
-This table shows the qualitative results for the Fairfax Mobility Data. The results for the Fairfax Mobility Data show similar patterns to that of the Facebook Location data. For the Partitioning-Based algorithm with 24 known locations, clusters can be seen where communities where matched correctly but individual vertices within the community were matched incorrectly. For the Graph Drawing figure with zero known locations, long links on the peripheries of the graph are observed due to the fact that there are no known locations that can be used to attract vertices to the correct location.
+This table shows the qualitative results for the Fairfax Mobility Data, averaged over thirty trials. The results for the Fairfax Mobility Data show similar patterns to that of the Facebook Location data. For the Partitioning-Based algorithm with 24 known locations, areas can be seen where clusters were matched correctly but individual vertices within the cluster were matched incorrectly. For the Graph Drawing figure with zero known locations, long links on the peripheries of the graph are observed due to the fact that there are no known locations that can be used to attract vertices to the correct location.
 
 | Known Locations | Random Algorithm | Greedy Algorithm | Partitioning-Based Algorithm | Graph Drawing Algorithm |
 |     :---:    |     :---:      |     :---:     |     :---:     |     :---:     |
@@ -64,32 +66,34 @@ This table shows the qualitative results for the Fairfax Mobility Data. The resu
 | 24 \(10%\) | <img src="ExperimentalResults/FairfaxImages/FairfaxCorrectDistanceRandomKnown24.png" width="250"> | <img src="ExperimentalResults/FairfaxImages/FairfaxCorrectDistanceGreedyKnown24.png" width="250"/> | <img src="ExperimentalResults/FairfaxImages/FairfaxCorrectDistancePartitioningKnown24.png" width="250"> | <img src="ExperimentalResults/FairfaxImages/FairfaxCorrectDistanceGraphDrawingKnown24.png" width="250"> |
 | 121 \(50%\) | <img src="ExperimentalResults/FairfaxImages/FairfaxCorrectDistanceRandomKnown121.png" width="250"> | <img src="ExperimentalResults/FairfaxImages/FairfaxCorrectDistanceGreedyKnown121.png" width="250"/> | <img src="ExperimentalResults/FairfaxImages/FairfaxCorrectDistancePartitioningKnown121.png" width="250"> | <img src="ExperimentalResults/FairfaxImages/FairfaxCorrectDistanceGraphDrawingKnown121.png" width="250"> |
 
-|Known Locations|Algorithm|Number Correct|Average Distance|Time (seconds)|Standard Deviation of Average Distances|
+The following table shows detailed quanitative results for Fairfax Mobility Network, averaged over thirty trials. Similar patterns to those in generated by the Facebook Dataset are observed in this table.
+
+|Known Locations|Algorithm|Number Correct|Average Distance|Runtime (seconds)|Standard Deviation of Average Distances|
 |     :---:    |     :---:      |     :---:     |     :---:     |     :---:     |     :---:     |
-|0|Random|0.9|0.1642|0.0008|0.0051|
-|0|Greedy|0.0|0.1427|0.0321|0.0|
-|0|Partitioning-Based|1.8|0.1607|429.5778|0.0471|
-|0|Graph Drawing|0.5333|0.1748|0.2672|0.0319|
-|3|Random|3.9|0.1627|0.0008|0.0052|
-|3|Greedy|4.6667|0.1311|0.0102|0.0329|
-|3|Partitioning-Based|6.4|0.1279|397.1876|0.0654|
-|3|Graph Drawing|4.9667|0.136|0.2651|0.0408|
-|24|Random|24.8333|0.1477|0.0009|0.005|
-|24|Greedy|25.7333|0.1205|0.0103|0.0231|
-|24|Partitioning-Based|27.1|0.1145|394.0292|0.0542|
-|24|Graph Drawing|24.8|0.146|0.2602|0.0343|
-|72|Random|73.1667|0.1158|0.001|0.0043|
-|72|Greedy|74.4333|0.0944|0.0109|0.0188|
-|72|Partitioning-Based|73.8667|0.1038|414.3915|0.0361|
-|72|Graph Drawing|73.2333|0.1051|0.2468|0.0184|
-|121|Random|121.9667|0.0822|0.001|0.0042|
-|121|Greedy|123.6|0.0662|0.0105|0.0147|
-|121|Partitioning-Based|121.9667|0.079|393.0506|0.0183|
-|121|Graph Drawing|122.4333|0.0651|0.2379|0.0087|
-|169|Random|169.9|0.0485|0.001|0.0043|
-|169|Greedy|172.2|0.0344|0.0092|0.0088|
-|169|Partitioning-Based|170.3333|0.0487|422.536|0.0108|
-|169|Graph Drawing|170.7667|0.0393|0.2287|0.0058|
+|0|Random|0.6|14.2815|0.0008|0.5016|
+|0|Greedy|0.0|11.971|0.0324|0.0|
+|0|Partitioning-Based|1.2333|14.0688|403.6501|5.1748|
+|0|Graph Drawing|0.9|14.9034|0.2661|4.4204|
+|3|Random|4.0667|14.029|0.0008|0.4557|
+|3|Greedy|5.4333|11.1201|0.0102|3.3937|
+|3|Partitioning-Based|5.1|12.9973|400.4093|6.1565|
+|3|Graph Drawing|4.8|12.1459|0.2648|4.8716|
+|24|Random|25.0333|12.8345|0.0009|0.5159|
+|24|Greedy|26.7333|10.5143|0.0101|2.693|
+|24|Partitioning-Based|27.7333|8.7394|414.2682|5.6241|
+|24|Graph Drawing|25.1333|12.6441|0.2635|2.9283|
+|72|Random|72.8333|9.9931|0.0009|0.4199|
+|72|Greedy|74.3667|7.5181|0.0113|1.734|
+|72|Partitioning-Based|74.8|8.0971|402.9873|3.7353|
+|72|Graph Drawing|73.3333|8.3542|0.2476|1.3505|
+|121|Random|122.0|7.0541|0.001|0.4822|
+|121|Greedy|123.6|5.8137|0.0105|1.7397|
+|121|Partitioning-Based|122.6667|6.378|417.6914|2.0634|
+|121|Graph Drawing|122.9|5.5236|0.2367|0.8885|
+|169|Random|170.0333|4.3409|0.001|0.3587|
+|169|Greedy|172.0333|3.3329|0.009|1.1096|
+|169|Partitioning-Based|170.3333|4.0672|391.0564|1.0173|
+|169|Graph Drawing|170.8667|3.1458|0.2289|0.4035|
 
 ### Synthetic Geosocial Erdős-Rényi Network
 
@@ -102,7 +106,9 @@ The following table shows qualitative results for the Geosocial Erdős-Rényi Ne
 | 10 | <img src="ExperimentalResults/ErdosReyniImages/ERCorrectDistanceRandomKnown3.png" width="250"/> | <img src="ExperimentalResults/ErdosReyniImages/ERCorrectDistanceGreedyKnown10.png" width="250"> | <img src="ExperimentalResults/ErdosReyniImages/ERCorrectDistancePartitioningKnown10.png" width="250"> | <img src="ExperimentalResults/ErdosReyniImages/ERCorrectDistanceGraphDrawingKnown10.png" width="250"> |
 | 50 | <img src="ExperimentalResults/ErdosReyniImages/ERCorrectDistanceRandomKnown50.png" width="250"/> | <img src="ExperimentalResults/ErdosReyniImages/ERCorrectDistanceGreedyKnown50.png" width="250"> | <img src="ExperimentalResults/ErdosReyniImages/ERCorrectDistancePartitioningKnown50.png" width="250"> | <img src="ExperimentalResults/ErdosReyniImages/ERCorrectDistanceGraphDrawingKnown50.png" width="250"> |
 
-| Population | Known Locations|Algorithm|Number Correct|Average Distance|Time (seconds)|Standard Deviation of Average Distances|
+Quanititative results, averaged over thirty trials, for the Geosocial Erdős-Rényi are shown below. For each trial, random locations were used and a new geosocial network was generated everytime. Additionally, new random known locations were used for each trial. We see that for each population, the Graph Drawing algorithm has the best average distance out of all the algorithms in trials with 10 or 50 known locations. For trials with 50 known locations, the average distance of the Graph Drawing algorithm is consistently less than half of the average distances of all other algorithms.
+
+| Population | Known Locations|Algorithm|Number Correct|Average Distance|Runtime (seconds)|Standard Deviation of Average Distances|
 |     :---:    |     :---:    |     :---:      |     :---:     |     :---:     |     :---:     |     :---:     |
 |100|0|Random|1.1|0.5222|0.0003|0.0307|
 |100|0|Greedy|1.6|0.4934|0.0057|0.0694|
