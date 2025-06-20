@@ -5,9 +5,17 @@ This is the code for the forthcoming paper *Your Friends Reveal Where You Are: L
 Geosocial networks serve as a critical bridge between cyber and physical worlds by linking individuals to locations. In many realworld scenarios, both the structure of social networks and the spatial distribution of places are known—yet the connecting information that links people to locations is missing. This absence is often intentional to ensure user privacy. In this work, we investigate the feasibility of estimating locations based solely on network structure and a limited set of known user-location pairs. We propose and evaluate three novel algorithms for linking social and spatial networks: (i) a greedy assignment algorithm, (ii) a hierarchical approach using graph partitioning, and (iii) a spatially-aware adaptation of force-directed graph drawing. Each method is further enhanced to incorporate a small number of known anchor vertex—users with known locations. Using anonymized social network data from the Virginia, USA region, our empirical evaluation shows that even a sparse set of anchor points can enable accurate estimation of users’ home locations. These findings highlight both the potential analytical value and the privacy risks associated with linking social and spatial data.
 
 ## Algorithms
-The three proposed algorithms are included in this repository. The Greedy algorithm matches vertices to locations that are close to the locations of vertices they are connected to. Vertices are processed iteratively in order of degree. The Partitioning-Based algorithm utilizes METIS, a graph partitioning software, to match clusters of vertices to clusters of locations. Finally, the Graph Drawing algorithm utilizes the NetworkX Spring Layout function to generate locations for each vertex in the social network. Vertices are then matched to the closest available location.
+The three proposed algorithms are included in this repository:
+1. The Greedy algorithm. This algorithm matches vertices to locations that are close to the locations of vertices they are connected to. Vertices are processed iteratively in order of degree.
+2. The Partitioning-Based algorithm. This algorithm utilizes METIS, a graph partitioning software, to match clusters of vertices to clusters of locations.
+3. The Graph Drawing algorithm. This algorithm utilizes the NetworkX Spring Layout function to generate locations for each vertex in the social network. Vertices are then matched to the closest available location.
 
-Each algorithm requires an adjacency matrix to represent the social network, a list of coordinates that vertices are matched to, and a dictionary of known locations that maps the ID of a vertex in the adjacency matrix to a coordinate in the list of locations. If there are no known locations, this dictionary is empty. Each algorithm returns a dictionary that maps vertices to locations.
+Requirements for each algorthim:
+* An adjacency matrix to represent the social network
+* A list of coordinates that vertices are matched to
+* A dictionary of known locations that maps the ID of a vertex in the adjacency matrix to a coordinate in the list of locations. If there are no known locations, this dictionary is empty.
+
+Each algorithm returns a dictionary that maps vertices to locations.
 
 ## Experimental Results
 |![](ExperimentalResults/FacebookImages/FacebookGroundTruth.png)<br>Ground Truth Network for Facebook Location Data|![](ExperimentalResults/FairfaxImages/FairfaxGroundTruth.png)<br>Ground Truth Network for Fairfax Mobility Data|
@@ -18,6 +26,7 @@ The three proposed algorithms were tested on three datasets: Facebook Social Con
 Detailed quantitative results, including the average distance between the assigned location and true location, the number of nodes inferred correctly, run time, and the standard deviations of average distances can be found under [ExperimentalResults/QuantitativeResults](ExperimentalResults/QuantitativeResults). These quantitative results are the average of 30 trials. The standard deviations displayed are calculated from the 30 trials.
 
 ### Facebook Social Connectedness Network
+#### Qualitative Results
 The qualitative results for the Facebook Network are shown in the figure below. In each figure, the estimated location (black nodes) and true location (red nodes) for each vertex are connected. The links in the Graph Drawing algorithm image become shorter and the graph becomes less dark when compared to the other algorithms as the number of known locations increases. In particular, the figure for the Graph Drawing algorithm with 481 known locations has very few long links even when compared to other algorithms with 481 known locations. Although the Partitioning-Based algorithm does not have very many long links when only a few locations are known, as can be seen in the example with three known locations, it does not improve as known locations are added. All three algorithms have more whitespace than the random graph, which has very long links even with many known locations.
 
 | Known Locations |Random Algorithm | Greedy Algorithm | Partitioning-Based Algorithm | Graph Drawing Algorithm | 
@@ -27,6 +36,7 @@ The qualitative results for the Facebook Network are shown in the figure below. 
 | 68 \(10%\) | <img src="ExperimentalResults/FacebookImages/FacebookCorrectDistanceRandomKnown68.png" width="250"> | <img src="ExperimentalResults/FacebookImages/FacebookCorrectDistanceGreedyKnown68.png" width="250"/> | <img src="ExperimentalResults/FacebookImages/FacebookCorrectDistancePartitioningKnown68.png" width="250"> | <img src="ExperimentalResults/FacebookImages/FacebookCorrectDistanceGraphDrawingKnown68.png" width="250"> |
 | 344 \(50%\) | <img src="ExperimentalResults/FacebookImages/FacebookCorrectDistanceRandomKnown344.png" width="250"> | <img src="ExperimentalResults/FacebookImages/FacebookCorrectDistanceGreedyKnown344.png" width="250"/> | <img src="ExperimentalResults/FacebookImages/FacebookCorrectDistancePartitioningKnown344.png" width="250"> | <img src="ExperimentalResults/FacebookImages/FacebookCorrectDistanceGraphDrawingKnown344.png" width="250"> |
 
+#### Quantitative Results
 Quantitative results for the Facebook Network are displayed below. The first chart shows the average distance from the assigned location of each vertex to its true location. An overall decreasing trend can be observed for each algorithm as the number of known locations increases. The Graph Drawing algorithm decreases most rapidly as known locations increase but all algorithms consistently perform better than the random baseline. For the Partitioning-Based algorithm, the number of known locations does not greatly affect the outcome. This can also be observed in the number of vertices inferred correctly. While the Partitioning-Based algorithm can match many vertices to their correct location when compared to the other algorithms for a small number of known locations, the number of additional vertices inferred correctly does not increase greatly with a higher number of known locations. However, for the Graph Drawing algorithm, as the number of known locations increases, so does the number of additional vertices inferred correctly when compared to the other three algorithms.
 
 Average Distance to True Location | Number of Vertices Inferred Correctly | 
@@ -40,7 +50,7 @@ For all trials with known locations, the standard deviation of the average dista
 |<img src="ExperimentalResults/QuantitativeResults/StandardDeviationsFacebook.png" width="750">|
 
 ### Fairfax Mobility Network
-
+#### Qualitative Results
 This table shows the qualitative results for the Fairfax Mobility Data, averaged over 30 trials. The results for the Fairfax Mobility data show similar patterns to that of the Facebook Location data. For the Partitioning-Based algorithm with 24 known locations, areas can be seen where clusters were matched correctly but individual vertices within the cluster were matched incorrectly. For the Graph Drawing figure with zero known locations, long links on the peripheries of the graph are observed because there are no known locations that can be used to attract vertices to the correct location.
 
 | Known Locations | Random Algorithm | Greedy Algorithm | Partitioning-Based Algorithm | Graph Drawing Algorithm |
@@ -50,6 +60,7 @@ This table shows the qualitative results for the Fairfax Mobility Data, averaged
 | 24 \(10%\) | <img src="ExperimentalResults/FairfaxImages/FairfaxCorrectDistanceRandomKnown24.png" width="250"> | <img src="ExperimentalResults/FairfaxImages/FairfaxCorrectDistanceGreedyKnown24.png" width="250"/> | <img src="ExperimentalResults/FairfaxImages/FairfaxCorrectDistancePartitioningKnown24.png" width="250"> | <img src="ExperimentalResults/FairfaxImages/FairfaxCorrectDistanceGraphDrawingKnown24.png" width="250"> |
 | 121 \(50%\) | <img src="ExperimentalResults/FairfaxImages/FairfaxCorrectDistanceRandomKnown121.png" width="250"> | <img src="ExperimentalResults/FairfaxImages/FairfaxCorrectDistanceGreedyKnown121.png" width="250"/> | <img src="ExperimentalResults/FairfaxImages/FairfaxCorrectDistancePartitioningKnown121.png" width="250"> | <img src="ExperimentalResults/FairfaxImages/FairfaxCorrectDistanceGraphDrawingKnown121.png" width="250"> |
 
+#### Quantitative Results
 The following figures show quantitative results for Fairfax Mobility Network, averaged over 30 trials. In the chart which displays average distances, similar patterns to those seen in results generated by the Facebook dataset are observed, including that the Graph Drawing algorithm improves most rapidly when compared to the other algorithms. For 169 and 121 known locations, although the Greedy algorithm outperforms the Graph Drawing algorithm in the number of vertices inferred correctly, the Graph Drawing algorithm has a shorter average distance to the true location for both of these levels of known locations. This pattern can also be seen in the qualitative results, as the figures for the Greedy algorithm often have long links across the graph where vertices were matched far from their true location.
 
 Average Distance to True Location | Number of Vertices Inferred Correctly | 
@@ -64,7 +75,7 @@ The chart below displays the standard deviation of the average distance for each
 
 
 ### Synthetic Geosocial Erdős-Rényi Network
-
+#### Qualitative Results
 The following table shows qualitative results for the Geosocial Erdős-Rényi Network with all algorithms. Each figure was generated using the same set of 1,000 random locations and the same Geosocial network, but different levels of known locations were used. Similarly to the real-world datasets, the Graph Drawing algorithm improves greatly as more known locations are added. In fact, the figure for the Graph Drawing algorithm with 50 known locations has the most whitespace out of any of the Erdős-Rényi figures. The random baseline is also observed to have many long links and uniform errors, as expected.
 
 | Known Locations | Random Algorithm | Greedy Algorithm | Partitioning-Based Algorithm | Graph Drawing Algorithm |
@@ -74,6 +85,7 @@ The following table shows qualitative results for the Geosocial Erdős-Rényi Ne
 | 10 | <img src="ExperimentalResults/ErdosReyniImages/ERCorrectDistanceRandomKnown3.png" width="250"/> | <img src="ExperimentalResults/ErdosReyniImages/ERCorrectDistanceGreedyKnown10.png" width="250"> | <img src="ExperimentalResults/ErdosReyniImages/ERCorrectDistancePartitioningKnown10.png" width="250"> | <img src="ExperimentalResults/ErdosReyniImages/ERCorrectDistanceGraphDrawingKnown10.png" width="250"> |
 | 50 | <img src="ExperimentalResults/ErdosReyniImages/ERCorrectDistanceRandomKnown50.png" width="250"/> | <img src="ExperimentalResults/ErdosReyniImages/ERCorrectDistanceGreedyKnown50.png" width="250"> | <img src="ExperimentalResults/ErdosReyniImages/ERCorrectDistancePartitioningKnown50.png" width="250"> | <img src="ExperimentalResults/ErdosReyniImages/ERCorrectDistanceGraphDrawingKnown50.png" width="250"> |
 
+#### Quantitative Results
 Quantitative results, averaged over 30 trials, for the Geosocial Erdős-Rényi Network are shown below. For each trial, random locations were used and a new geosocial network was generated every time. Additionally, new random known locations were used for each trial. The charts below were generated using a population of 1,000 vertices. Charts and results for populations of 100 and 500 vertices can be found under [ExperimentalResults/QuantitativeResults](ExperimentalResults/QuantitativeResults).
 
 We see that for each level of known locations, the Graph Drawing algorithm has the best average distance out of all the algorithms. For 50 known locations, the average distance of the Graph Drawing algorithm is less than half of the average distances of all other algorithms. In the chart that displays the number of vertices inferred correctly for each algorithm, it can be observed that while the Partitioning-Based algorithm has the highest number correct initially, as the number of known locations increases, the number of vertices matched correctly rapidly increases for the Graph Drawing algorithm, leading to it have the highest number correct for the trials with 50 known locations. 
